@@ -5,6 +5,8 @@ const celsius = document.getElementById("celsius");
 const fahrenheit = document.getElementById("fahrenheit");
 const apiKey = "bfc43e5bd26b4cd17b268c7a584e0b7e";
 
+let weatherData;
+
 // form submission
 weatherForm.addEventListener("submit", async event => {
 
@@ -15,7 +17,7 @@ weatherForm.addEventListener("submit", async event => {
 
     if(city){
         try{
-            const weatherData = await getWeatherData(city);
+            weatherData = await getWeatherData(city);
             displayWeatherData(weatherData);
         }
         catch(error){
@@ -26,7 +28,14 @@ weatherForm.addEventListener("submit", async event => {
     else{
         displayError("please enter a city");
     }
+});
 
+celsius.addEventListener("click", () =>{
+    if(weatherData) displayWeatherData(weatherData);
+});
+
+fahrenheit.addEventListener("click", () =>{
+    if(weatherData) displayWeatherData(weatherData);
 });
 
 async function getWeatherData(city){
@@ -97,7 +106,7 @@ function getWeatherEmoji(weatherId){
         case(weatherId >= 700 && weatherId < 800): return "🌫️";
         case(weatherId >= 200 && weatherId < 300): return "🌩️";
         case(weatherId === 800): return "☀️";
-        case(weatherId >= 801 && weatherId < 800): return "☁️";
+        case(weatherId >= 801 && weatherId < 900): return "☁️";
         default: return "❓";
     }
 }
@@ -105,7 +114,7 @@ function getWeatherEmoji(weatherId){
 function displayError(message){
     const errorDisplay = document.createElement("p");
     errorDisplay.textContent = message;
-    errorDisplay.classList.add(".errorDisplay");
+    errorDisplay.classList.add("errorDisplay");
     card.textContent = "";
     card.style.display = "flex";
     card.appendChild(errorDisplay);
